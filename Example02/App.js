@@ -110,6 +110,6 @@ export default class App extends Component<Props> {
 /*
 6. A module can contain both 'named exports' and a 'default export'.
 
-	example
-	-------*/
-	import MyComponentApp, {Template, AnotherTemplate} from './MyComponent';
+example
+-------*/
+import MyComponentApp, {Template, AnotherTemplate} from './MyComponent';
