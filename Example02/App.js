@@ -143,3 +143,9 @@ export default class App extends Component<Props> {
 }
 
 AppRegistry.registerComponent(appName, () => App);
+
+
+
+
+
+
