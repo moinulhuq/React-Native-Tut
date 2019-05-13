@@ -113,3 +113,33 @@ export default class App extends Component<Props> {
 example
 -------*/
 import MyComponentApp, {Template, AnotherTemplate} from './MyComponent';
+
+/*
+7. 'render()' render pros bsically render the 'JSX' inside and return it.
+
+example
+-------*/
+export default class App extends Component<Props> {
+  render() {
+    return (
+      <View>
+        <Text>Hello world!</Text>
+      </View>
+    );
+  }
+
+/*8. 'AppRegistry' is the JS entry point to running all React Native apps. App root components register themselves with 'AppRegistry.registerComponent' and run the app when it is ready by invoking 'AppRegistry.runApplication'
+
+example
+-------*/
+export default class App extends Component<Props> {
+  render() {
+    return (
+      <View>
+        <Text>Hello world!</Text>
+      </View>
+    );
+  }
+}
+
+AppRegistry.registerComponent(appName, () => App);
