@@ -17,9 +17,9 @@ export default class App extends Component<Props> {
         	placeholder = "User name"
         	placeholderTextColor = "gray"
         	autoCapitalize = "none"
-			style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-			onChangeText={(Uname) => this.setState({Uname})}
-			value={this.state.Uname}
+		style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+		onChangeText={(Uname) => this.setState({Uname})}
+		value={this.state.Uname}
         />
         <Text>{this.state.Uname}</Text>
       </View>
@@ -46,10 +46,10 @@ export default class App extends Component<Props> {
         	placeholder = "User name"
         	placeholderTextColor = "gray"
         	autoCapitalize = "none"
-			style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-			onChangeText={(Uname) => this.setState({Uname})}
-			value={this.state.Uname}
-			multiline={true}
+		style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+		onChangeText={(Uname) => this.setState({Uname})}
+		value={this.state.Uname}
+		multiline={true}
         />
         <Text>{this.state.Uname}</Text>
       </View>
@@ -76,10 +76,10 @@ export default class App extends Component<Props> {
         	placeholder = "User name"
         	placeholderTextColor = "gray"
         	autoCapitalize = "none"
-			style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-			onChangeText={(Uname) => this.setState({Uname})}
-			value={this.state.Uname}
-			keyboardType="numeric"
+		style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+		onChangeText={(Uname) => this.setState({Uname})}
+		value={this.state.Uname}
+		keyboardType="numeric"
         />
         <Text>{this.state.Uname}</Text>
       </View>
