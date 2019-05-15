@@ -50,3 +50,6 @@
 
 /*
 7. The above code might not look like JavaScript, this is the improvements of JavaScript done by ES2015 or ES6, for that you can use 'import', 'from', 'class', and 'extends'.*/
+
+
+
