@@ -6,6 +6,7 @@
 3. You must call 'super(props)' before any other statement otherwise 'this.props' will be undefined in the constructor.
 
 4. 'constructor' are only used for two purposes
+
   a. Initializing local 'state' by assigning an object to 'this.state'.
 
   example
