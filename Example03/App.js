@@ -18,6 +18,9 @@ export default class App extends Component<Props> {
 
 example
 -------*/
+import React, { Component } from 'react';
+import { AppRegistry, StyleSheet } from 'react-native';
+
 export default class App extends Component<Props> {
   render() {
     return (
