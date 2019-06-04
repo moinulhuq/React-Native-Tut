@@ -115,7 +115,7 @@ example
 import MyComponentApp, {Template, AnotherTemplate} from './MyComponent';
 
 /*
-7. 'render()' render pros basically render the 'JSX' inside and return it.
+7. 'render()' render props basically render the 'JSX' inside and return it.
 
 example
 -------*/
