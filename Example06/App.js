@@ -154,4 +154,94 @@ export default class App extends Component<Props> {
   }
 }
 
+/*
+7. FlatList: is simple list support Optional horizontal mode, Header support, Footer support, Separator support, Pull to Refresh, Scroll loading.
 
+Example 01
+----------*/
+    import React, { Component } from 'react'
+    import { Text, View, FlatList } from 'react-native'
+
+    const DATA = ['First Item','Second Item','Third Item'];
+
+    export default class App extends Component {
+
+      renderItem({ item, index }){
+        return (
+          <View>
+            <Text>{item}</Text>
+          </View>
+        );
+      }    
+
+      render() {
+        return (      
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                data={DATA}
+                renderItem={this.renderItem}
+              />
+          </View>
+        )
+      }
+    }
+
+/*
+Flatlist with array object (assigned to state var)
+
+Example 02
+----------*/
+    import React, { Component } from 'react'
+    import { Text, View, FlatList } from 'react-native'
+
+    const DATA = [
+      {
+        id: '1',
+        title: 'First Item',
+      },
+      {
+        id: '2',
+        title: 'Second Item',
+      },
+      {
+        id: '3',
+        title: 'Third Item',
+      },
+    ];
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          dataSource: [],  
+        }
+        this.renderItem = this.renderItem.bind(this);
+      }
+
+
+      componentDidMount(){
+        this.setState({dataSource: DATA}) 
+      }
+
+      renderItem({ item, index }){
+        return (
+          <View>
+            <Text>{item.title}</Text>
+          </View>
+        );
+      }    
+
+      render() {
+        return (      
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+              <FlatList
+                keyExtractor={(item, index) => index.toString()}
+                data={this.state.dataSource}
+                renderItem={this.renderItem}
+              />
+          </View>
+        )
+      }
+    }
