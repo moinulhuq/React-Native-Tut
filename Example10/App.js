@@ -332,7 +332,7 @@ example
 example
 -------*/
 
-   import React, { Component } from 'react';
+    import React, { Component } from 'react';
     import { Text, View, TouchableHighlight, Button } from 'react-native';
     import Modal from "react-native-modal";
 
@@ -360,6 +360,145 @@ example
                 <Button title="Hide modal" onPress={this.toggleModal} />
               </View>
             </Modal>
+          </View>
+        );
+      }
+    }
+
+/*
+11. Slider: A component used to select a single value from a range of values. React Native Slider is deprecated. We will use community Slider (react-native-slider). To setup use "npm i @react-native-community/slider --save" or "yarn add @react-native-community/slider".
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, TouchableHighlight, Button } from 'react-native';
+    import Slider from '@react-native-community/slider';
+
+    export default class App extends Component {
+
+      render() {
+        return (
+          <View style={{ flex: 1 }}>
+            <Slider
+              style={{width: 200, height: 40}}
+              minimumValue={0}
+              maximumValue={1}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000"
+            />
+          </View>
+        );
+      }
+    }
+
+/*
+12. StatusBar: Component to control the app status bar..
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, StatusBar } from 'react-native';
+
+    export default class App extends Component {
+
+      render() {
+        return (
+          <View style={{ flex: 1 }}>
+            <StatusBar barStyle = "dark-content" hidden = {false} backgroundColor = "#00BCD4" translucent = {true}/>
+          </View>
+        );
+      }
+    }
+
+/*
+13. Switch: is a component for getting/showing boolean value or to select from one out of two.
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Switch } from 'react-native';
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          switchValue: false,
+        }
+        this.switchTrue = this.switchTrue.bind(this);
+      }
+
+      switchTrue(){
+        this.setState({ switchValue: !this.state.switchValue });
+      };
+
+      render() {
+        return (
+          <View style={{ flex: 1 }}>
+            <Switch onValueChange = {this.switchTrue} value = {this.state.switchValue} />
+          </View>
+        );
+      }
+    }
+
+/*
+14. DateTimePicker: date & time picker component. We will use community DateTimePicker (react-native-datetimepicker). To setup use "npm i @react-native-community/datetimepicker --save" or "yarn add @react-native-community/datetimepicker".
+
+	i)  Add the following lines to android/settings.gradle:
+		include ':react-native-datetimepicker'
+		project(':react-native-datetimepicker').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/datetimepicker/android')
+
+	ii) Add the compile line to the dependencies in android/app/build.gradle:
+		dependencies {
+		    ...
+		    implementation project(':react-native-datetimepicker')
+		}
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button } from 'react-native';
+
+    import DateTimePicker from '@react-native-community/datetimepicker';
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          date: new Date('2020-06-12T14:42:42'),
+          show: false,
+        }
+        this.datepicker = this.datepicker.bind(this);
+        this.setDate = this.setDate.bind(this);
+      }
+
+      datepicker(){
+        this.setState({ show: true });
+      };
+
+      setDate(event, date){
+        this.setState({ date: date, show: false });
+      }
+
+      render() {
+        return (
+          <View style={{ flex: 1 }}>
+            <View>
+              <Button onPress={this.datepicker} title="Show date picker!" />
+            </View>
+            { this.state.show && <DateTimePicker 
+                                    value={this.state.date}
+                                    mode= {'date'}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.setDate}
+                                  />
+            }
           </View>
         );
       }
