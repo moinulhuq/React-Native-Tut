@@ -503,3 +503,48 @@ example
         );
       }
     }
+
+/*
+15. ImageBackground: use to handle background image. you must specify some width and height style attributes
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button, ImageBackground } from 'react-native';
+
+    export default class App extends Component {
+
+      render() {
+        return (
+          <View>
+            <ImageBackground source={require('./img/background.jpeg')} style={{width: '100%', height: '100%'}}>
+              <Text>Inside</Text>
+            </ImageBackground>
+          </View>
+        );
+      }
+    }
+
+/*
+16. Picker: use to handle background image. you must specify some width and height style attributes
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button, ImageBackground } from 'react-native';
+
+    export default class App extends Component {
+
+      render() {
+        return (
+          <View>
+            <ImageBackground source={require('./img/background.jpeg')} style={{width: '100%', height: '100%'}}>
+              <Text>Inside</Text>
+            </ImageBackground>
+          </View>
+        );
+      }
+    }
+    
