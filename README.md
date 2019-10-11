@@ -57,7 +57,23 @@ Run the below command 2 Times
   react-native link react-native-gesture-handler
   
   react-native run-android
-  
+
+# Batch for clear cache
+
+@ECHO OFF
+ECHO Congratulations! Your first batch file executed successfully.
+set root=C:\Mobile\Test\android
+set rootOneLevelUp=C:\Mobile\Test\
+CD /D %root%
+Echo %root%
+call gradlew clean
+call CD /D %rootOneLevelUp%
+call Echo %rootOneLevelUp%
+call yarn cache clean
+call npm cache clean --force
+call npm start --reset-cache && echo "moin"
+Pause
+
   
 axios
 moment
@@ -69,3 +85,5 @@ react-native-video
 react-native-webview
 react-navigation
 realm
+
+
