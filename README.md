@@ -71,7 +71,7 @@ call CD /D %rootOneLevelUp%
 call Echo %rootOneLevelUp%
 call yarn cache clean
 call npm cache clean --force
-call npm start --reset-cache && echo "moin"
+call npm start --reset-cache
 Pause
 
   
