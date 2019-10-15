@@ -764,3 +764,125 @@ example
         )
       }
     }
+
+/*
+19. SafeAreaView:  to render content within the safe area boundaries of a device. It is currently only applicable to iOS since <View> is overlapping the status bars. <SafeAreaView> renders nested content and automatically applies padding.
+
+example
+-------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, SafeAreaView } from 'react-native';
+
+    export default class App extends Component {
+      render() {
+        return (
+          <SafeAreaView>
+            <Text>Page content</Text>
+          </SafeAreaView>          
+        );
+      }
+    }
+
+/*
+20. TextInput:  for inputting text into the app via a keyboard. It has auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.
+
+'TextInput' enter text (single line).
+
+example
+-------*/
+    
+    import React, { Component } from 'react';
+    import { Text, View, TextInput } from 'react-native';
+
+    export default class App extends Component<Props> {
+      constructor(props) {
+        super(props);
+        this.state = {Uname: ''};
+      }
+
+      render() {
+        return (
+          <View>
+            <TextInput 
+                underlineColorAndroid = "transparent"
+                placeholder = "User name"
+                placeholderTextColor = "gray"
+                autoCapitalize = "none"
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText={(Uname) => this.setState({Uname})}
+            value={this.state.Uname}
+            />
+            <Text>{this.state.Uname}</Text>
+          </View>
+        );
+      }
+    }
+
+/*
+'TextInput' enter text (multiple line).
+
+example
+-------*/
+    
+    import React, { Component } from 'react';
+    import { Text, View, TextInput } from 'react-native';
+
+    export default class App extends Component<Props> {
+      constructor(props) {
+        super(props);
+        this.state = {Uname: ''};
+      }
+
+      render() {
+        return (
+          <View>
+            <TextInput 
+                underlineColorAndroid = "transparent"
+                placeholder = "User name"
+                placeholderTextColor = "gray"
+                autoCapitalize = "none"
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText={(Uname) => this.setState({Uname})}
+            value={this.state.Uname}
+            multiline={true}
+            />
+            <Text>{this.state.Uname}</Text>
+          </View>
+        );
+      }
+    }
+
+/*
+'TextInput' enter numeric (multiple line).
+
+example
+-------*/
+    
+    import React, { Component } from 'react';
+    import { Text, View, TextInput } from 'react-native';
+
+    export default class App extends Component<Props> {
+      constructor(props) {
+        super(props);
+        this.state = {Uname: ''};
+      }
+
+      render() {
+        return (
+          <View>
+            <TextInput 
+                underlineColorAndroid = "transparent"
+                placeholder = "User name"
+                placeholderTextColor = "gray"
+                autoCapitalize = "none"
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText={(Uname) => this.setState({Uname})}
+            value={this.state.Uname}
+            keyboardType="numeric"
+            />
+            <Text>{this.state.Uname}</Text>
+          </View>
+        );
+      }
+    }
