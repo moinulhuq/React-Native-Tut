@@ -527,24 +527,240 @@ example
     }
 
 /*
-16. Picker: use to handle background image. you must specify some width and height style attributes
+16. Picker: Renders the native picker component on iOS and Android. We will use community Picker (@react-native-community/picker). To setup use "npm i @react-native-community/picker --save".
 
 example
 -------*/
 
     import React, { Component } from 'react';
-    import { Text, View, Button, ImageBackground } from 'react-native';
+    import { Text, View, Button } from 'react-native';
+    import { Picker } from '@react-native-community/picker';
 
     export default class App extends Component {
 
+      constructor(props) {
+        super(props);
+        this.state = { 
+          launguage: 'java', 
+          car: 'toyota', 
+          book: 'history', 
+          country: 'japan', 
+        }
+      }      
+
       render() {
+
         return (
-          <View>
-            <ImageBackground source={require('./img/background.jpeg')} style={{width: '100%', height: '100%'}}>
-              <Text>Inside</Text>
-            </ImageBackground>
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+
+            {/* Basic picker */}
+            <Picker
+              selectedValue={this.state.language}
+              style={{height: 50, width: 100}}
+              onValueChange={(itemValue, itemIndex) =>
+                  this.setState({language: itemValue}
+                )}>
+              <Picker.Item label="Java" value="java" />
+              <Picker.Item label="JavaScript" value="js" />
+            </Picker>
+            
+            {/* Disable picker */}            
+            <Picker
+              selectedValue={this.state.language}
+              style={{height: 50, width: 100}}
+              enabled={false}
+              onValueChange={(itemValue, itemIndex) =>
+                  this.setState({car: itemValue}
+                )}>
+              <Picker.Item label="Toyota" value="toyota" />
+              <Picker.Item label="Nissan" value="nissan" />
+            </Picker>
+
+            {/* Dropdown picker */}            
+            <Picker
+              selectedValue={this.state.language}
+              style={{height: 50, width: 100}}
+              mode={"dialog"}
+              onValueChange={(itemValue, itemIndex) =>
+                  this.setState({book: itemValue}
+                )}>
+              <Picker.Item label="History" value="history" />
+              <Picker.Item label="Geography" value="geography" />
+            </Picker>
+
+            {/* Prompt message picker */}
+            <Picker              
+              selectedValue={this.state.language}
+              style={{height: 50, width: 100}}
+              prompt={"Pick one"}
+              onValueChange={(itemValue, itemIndex) =>
+                  this.setState({country: itemValue}
+                )}>
+              <Picker.Item label="Japan" value="japan" />
+              <Picker.Item label="Korea" value="korea" />
+            </Picker>
+
+            {/* Colourful picker */}
+            <Picker 
+              selectedValue={this.state.language}
+              style={{height: 50, width: 100}}
+              onValueChange={(itemValue, itemIndex) =>
+                  this.setState({country: itemValue}
+                )}>
+              <Picker.Item label="Japan" color="#32CD32" value="japan" />
+              <Picker.Item label="Japan" color="red" value="japan" />
+              <Picker.Item label="Korea" color="blue" value="korea" />
+            </Picker>
+
           </View>
         );
       }
     }
-    
+
+/*
+17. ProgressBarAndroid: used to indicate that the app is loading or there is some activity in the app.
+
+example 01
+---------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button, ProgressBarAndroid } from 'react-native';
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          launguage: 'java', 
+          car: 'toyota', 
+          book: 'history', 
+          country: 'japan', 
+        }
+      }      
+
+      render() {
+
+        return (
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+            <ProgressBarAndroid />
+            <ProgressBarAndroid styleAttr="Horizontal" />
+            <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={0.5} />
+          </View>
+        );
+      }
+    }
+
+/*
+Click on Progress
+
+example 02
+---------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button, ProgressBarAndroid } from 'react-native';
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          progress: 0.5, 
+        }
+        this.changeProgress = this.changeProgress.bind(this);
+      }
+
+      changeProgress(){
+        this.setState({ progress: this.state.progress+0.1 });
+      };
+
+      render() {
+
+        return (
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+            <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.progress} />
+            <Button title="Press for Progress" onPress={this.changeProgress} />
+          </View>
+        );
+      }
+    }
+
+/*
+Animated Progress
+
+example 03
+---------*/
+
+    import React, { Component } from 'react';
+    import { Text, View, Button, ProgressBarAndroid } from 'react-native';
+
+    export default class App extends Component {
+
+      constructor(props) {
+        super(props);
+        this.state = { 
+          progress: 0.5, 
+        }
+      }
+
+      componentDidMount(){
+        let that = this;         
+        setInterval(function(){that.setState({progress: that.state.progress+0.01})}, 500);
+      }
+
+      render() {
+        return (
+          <View style={{flex: 1, justifyContent: 'center', padding: 100}}>
+            <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={this.state.progress} />
+          </View>
+        );
+      }
+    }
+
+/*
+18. RefreshControl: This component is used inside a ScrollView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.
+
+example
+-------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, ScrollView, RefreshControl } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          refreshing: false,
+        }
+        this.onRefresh = this.onRefresh.bind(this);
+      }
+
+      onRefresh(){
+        this.setState({refreshing: true});
+
+        let that = this;
+        setInterval(function(){that.setState({refreshing: false})}, 2000);
+      }
+
+      render() {
+        return (      
+          <View>
+            <ScrollView 
+              style={{marginHorizontal: 20,marginVertical: 20}}
+              refreshControl={ <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} /> }>
+              <Text>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat. Duis aute irure dolor in
+                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum.
+              </Text>
+              <Text>
+                Pull down to see refresh icon
+              </Text>
+            </ScrollView>
+          </View>
+        )
+      }
+    }
