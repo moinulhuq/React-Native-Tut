@@ -30,6 +30,8 @@ There are two value types that you can use with Animated for initializing state 
 	a) Animated.Value(n) for single values
 	b) Animated.ValueXY({ x: n, y: m }) for vectors
 
+Here couple of exmaple of Animated.timing()
+
     Example - Fading
     ----------------*/
 
@@ -529,3 +531,4 @@ In this example, when animation changes its value from zero to one, it will grad
           height: 100 
         }
     });
+
