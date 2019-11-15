@@ -532,3 +532,245 @@ In this example, when animation changes its value from zero to one, it will grad
         }
     });
 
+/*
+Spring: give us three groups of options to control the behavior of the spring. We can only use one at a time.
+
+	a) friction/tension
+	b) speed/bounciness
+	c) swiftness/damping/mass
+
+Friction controls how quickly the spring calms down. tension is the energy of that spring. The default values are 7 for friction, and 40 for tension.
+
+Here are couple of exmaples of Animated.spring() : 
+
+    Example - friction/tension
+    --------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        Animated.spring(this.state.animation, {
+          toValue: 250,
+          duration: 2000,
+          friction: 1,
+          tention: 20
+        }).start();
+      }
+
+      render() {
+
+        const animationStyles = {
+          transform: [
+            { translateY: this.state.animation }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+Controls speed of the animation. Controls bounciness. The default values are 12 for speed, and 8 for bounciness.
+
+    Example - friction/tension
+    --------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        Animated.spring(this.state.animation, {
+          toValue: 250,
+          duration: 2000,
+          speed: 5,
+          bounciness: 40
+        }).start();
+      }
+
+      render() {
+
+        const animationStyles = {
+          transform: [
+            { translateY: this.state.animation }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+Stiffness define the spring stiffness coefficient. Damping defines how the spring’s motion should be damped due to the forces of friction. Mass define the mass of the object attached to the end of the spring..
+
+The default values are 100 for stiffness, and 10 for damping and 1 for mass.
+
+    Example - swiftness/damping/mass
+    --------------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        Animated.spring(this.state.animation, {
+          toValue: 250,
+          duration: 2000,
+          stiffness: 200,
+          damping: 2  ,
+          mass: 15
+        }).start();
+      }
+
+      render() {
+
+        const animationStyles = {
+          transform: [
+            { translateY: this.state.animation }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+Decay: used to animate the value from its initial velocity down to zero using the deceleration option.
+
+Here are couple an exmaple of Animated.decay() :
+
+    Example - decay
+    ---------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(-150),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        Animated.decay(this.state.animation, {
+          toValue: 200,
+          duration: 2000,
+          velocity: 0.95,
+          deceleration: 0.998 // By default equals to 0.997
+        }).start();
+      }
+
+      render() {
+
+        const animationStyles = {
+          transform: [
+            { translateY: this.state.animation }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+Here we are moving the box down the screen. Once the box reaches the finishing line at 200 points below the center, the decay effect applies. The box keeps moving, but its speed is slowing down until it stops.
+
+    Example
+    -------*/
