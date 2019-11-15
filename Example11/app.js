@@ -774,6 +774,296 @@ Here are couple an exmaple of Animated.decay() :
 /*
 Here we are moving the box down the screen. Once the box reaches the finishing line at 200 points below the center, the decay effect applies. The box keeps moving, but its speed is slowing down until it stops.
 
-    Example
-    -------*/
+There are two ways of doing loop in animation.
+
+	a) Iteration 
+	b) Animation.loop()
+
+    Example - Iteration
+    -------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+        this.startAnim = this.startAnim.bind(this);
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        this.state.animation.setValue(0);
+        const rotateAnimation = Animated.timing(this.state.animation, {
+          toValue: 1,
+          duration: 2000,
+        }).start(this.startAnim);
+      }
+
+      render() {
+        const animationStyles = {
+          transform: [
+            {
+              rotate: this.state.animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0deg', '360deg']
+              })
+            }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+    Example - Animation.loop()
+    --------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const rotateAnimation = Animated.timing(this.state.animation, {
+          toValue: 1,
+          duration: 2000,
+        });
+
+        Animated.loop(
+          rotateAnimation,
+          {
+            iterations: 2
+          }
+        ).start();
+      }
+
+      render() {
+        const animationStyles = {
+          transform: [
+            {
+              rotate: this.state.animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0deg', '360deg']
+              })
+            }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+By default, the number of iterations is -1. That makes the animation repeat an infinite amount of times. but we can put any iteger number for number of iteration.
+
+Native driver: Animated module performs animations on the JavaScript side of React Native which help animations works smoothly but there is a way to move animations into the native UI using useNativeDriver: true option.
+
+    Example - Native driver
+    -----------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const rotateAnimation = Animated.timing(this.state.animation, {
+          toValue: 1,
+          duration: 2000,
+          useNativeDriver: true
+        });
+
+        Animated.loop(
+          rotateAnimation,
+          {
+            iterations: 2
+          }
+        ).start();
+      }
+
+      render() {
+        const animationStyles = {
+          transform: [
+            {
+              rotate: this.state.animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0deg', '360deg']
+              })
+            }
+          ]
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 100,
+          height: 100 
+        }
+    });
+
+/*
+Easing: module implements common easing functions which is used by Animated.timing().
+
+Easing module provides several predefined animations
+
+	a) back: provides a basic animation where the object goes slightly back before moving
+	b) bounce: provides a bouncing animation
+	c) ease: provides a basic inertial animation
+	d) elastic: provides a basic spring interaction
+
+Three standard easing functions
+
+	a) linear
+	b) quad
+	c) cubic
+
+Additional mathematical functions
+
+	a) bezier provides a cubic bezier curve
+	b) circle provides a circular function
+	c) sin provides a sinusoidal function
+	d) exp provides an exponential function
+
+The following helpers are used to modify other easing functions.
+
+	a) in runs an easing function forwards
+	b) inOut makes any easing function symmetrical
+	c) out runs an easing function backwards
+
+    Example - Easing
+    ----------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet, Easing } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          animation: new Animated.Value(0),
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        Animated.timing(this.state.animation, {
+          toValue: 250,
+          duration: 1000,
+          easing: Easing.bounce
+          // easing: Easing.cubic
+          // easing: Easing.back(2)
+          // easing: Easing.elastic(2)
+          // easing: Easing.ease
+          // easing: Easing.inOut(Easing.quad)
+          // easing: Easing.in(Easing.quad)
+          // easing: Easing.out(Easing.quad)
+          // easing: Easing.sin
+          // easing: Easing.linear
+          // easing: Easing.quad
+        }).start();
+      }
+
+      render() {
+        const animationStyles = {
+          transform: [
+            { translateY: this.state.animation },            
+          ],
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 200,
+          height: 200 
+        }
+    });
+
+/*
+Composition functions: Sometimes you may need to have several animations work together. You can use composition functions to achieve different behavior.
+
+	a) Animated.sequence() — Sequence is used to run several animations one after another.
+	b) Animated.parallel() — Can start several animations at the same time.
+	c) Animated.stagger() — Imagine we need to start an animation and then start another one before the first one is finished. It accepts the delay before starting list of animations.
+
+    Example - Sequence
+    ------------------*/
 
