@@ -597,7 +597,9 @@ Here are couple of exmaples of Animated.spring() :
     });
 
 /*
-Controls speed of the animation. Controls bounciness. The default values are 12 for speed, and 8 for bounciness.
+Speed controls the speed of the animation. bounciness controls the bounciness. 
+
+The default values are 12 for speed, and 8 for bounciness.
 
     Example - friction/tension
     --------------------------*/
@@ -774,3 +776,4 @@ Here we are moving the box down the screen. Once the box reaches the finishing l
 
     Example
     -------*/
+
