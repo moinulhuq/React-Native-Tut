@@ -97,6 +97,7 @@ In the above example, we used "Animated.timing()". This function accepts “Init
       }
 
       render() {
+
         const animationStyles = {
           transform: [
             { translateY: this.state.animation },            
@@ -159,7 +160,6 @@ It's good pracice to split styles into two parts:
 
       render() {
 
-
         const animationStyles = {
           transform: [
             { scaleY: this.state.animation },            
@@ -190,7 +190,7 @@ It's good pracice to split styles into two parts:
 
 /*
     Example - Flip
-    ---------------*/
+    --------------*/
 
     import React, { Component } from 'react'
     import { Text, View, FlatList, Animated, Button, StyleSheet } from 'react-native'
@@ -215,7 +215,6 @@ It's good pracice to split styles into two parts:
       }
 
       render() {
-
 
         const animationStyles = {
           transform: [
@@ -272,7 +271,6 @@ It's good pracice to split styles into two parts:
       }
 
       render() {
-
 
         const animationStyles = {
           width: this.state.animation,
@@ -772,7 +770,7 @@ Here are couple an exmaple of Animated.decay() :
     });
 
 /*
-Here we are moving the box down the screen. Once the box reaches the finishing line at 200 points below the center, the decay effect applies. The box keeps moving, but its speed is slowing down until it stops.
+Here we are moving the box down to the screen. Once the box reaches the finishing line at 200 points below the center, the decay effect applies. The box keeps moving, but its speed is slowing down until it stops.
 
 There are two ways of doing loop in animation.
 
@@ -900,7 +898,7 @@ There are two ways of doing loop in animation.
     });
 
 /*
-By default, the number of iterations is -1. That makes the animation repeat an infinite amount of times. but we can put any iteger number for number of iteration.
+By default, the number of iterations is -1. That makes the animation repeat an infinite amount of times. but we can put any integer number for Number of iteration.
 
 Native driver: Animated module performs animations on the JavaScript side of React Native which help animations works smoothly but there is a way to move animations into the native UI using useNativeDriver: true option.
 
@@ -1063,7 +1061,271 @@ Composition functions: Sometimes you may need to have several animations work to
 	a) Animated.sequence() — Sequence is used to run several animations one after another.
 	b) Animated.parallel() — Can start several animations at the same time.
 	c) Animated.stagger() — Imagine we need to start an animation and then start another one before the first one is finished. It accepts the delay before starting list of animations.
+	d) Animated.delay() — starts an animation after a given delay.
 
     Example - Sequence
     ------------------*/
 
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet, Easing } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          transformAnimation: new Animated.Value(0),
+          fallAnimation: new Animated.Value(0)
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const transformToBall =  Animated.timing(this.state.transformAnimation, {
+          toValue: 250,
+          duration: 1000,
+        });
+
+        const fallToptoBottom =  Animated.timing(this.state.fallAnimation, {
+          toValue: 250,
+          duration: 1000,
+          easing: Easing.bounce
+        });
+
+        Animated.sequence([
+          transformToBall,
+          fallToptoBottom
+        ]).start();
+      }
+
+      render() {
+        const animationStyles = {
+          borderRadius: this.state.transformAnimation,
+          transform: [
+            { translateY: this.state.fallAnimation },            
+          ],
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 200,
+          height: 200 
+        }
+    });
+
+/*
+As you can see the ball doesn’t start to move until the transformation animation is in progress.
+
+    Example - Parallel
+    ------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet, Easing } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          transformAnimation: new Animated.Value(0),
+          fallAnimation: new Animated.Value(0)
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const transformToBall =  Animated.timing(this.state.transformAnimation, {
+          toValue: 250,
+          duration: 1000,
+        });
+
+        const fallToptoBottom =  Animated.timing(this.state.fallAnimation, {
+          toValue: 250,
+          duration: 1000,
+          easing: Easing.bounce
+        });
+
+        Animated.parallel([
+          transformToBall,
+          fallToptoBottom
+        ]).start();
+      }
+
+      render() {
+        const animationStyles = {
+          borderRadius: this.state.transformAnimation,
+          transform: [
+            { translateY: this.state.fallAnimation },            
+          ],
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 200,
+          height: 200 
+        }
+    });
+
+/*
+As you can see, the box starts moving and transforming at the same time.
+
+Imagine we need to start our first animation and then start another after a certain amount of time. To achieve this we need Animated.stagger function. It accepts the delay before starting following animations, and the list of animations.
+
+    Example - Stagger
+    -----------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet, Easing } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          transformAnimation: new Animated.Value(0),
+          fallAnimation: new Animated.Value(0)
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const transformToBall =  Animated.timing(this.state.transformAnimation, {
+          toValue: 250,
+          duration: 1000,
+        });
+
+        const fallToptoBottom =  Animated.timing(this.state.fallAnimation, {
+          toValue: 250,
+          duration: 1000,
+          easing: Easing.bounce
+        });
+
+        Animated.stagger(5000, [
+          transformToBall,
+          fallToptoBottom
+        ]).start();
+      }
+
+      render() {
+        const animationStyles = {
+          borderRadius: this.state.transformAnimation,
+          transform: [
+            { translateY: this.state.fallAnimation },            
+          ],
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 200,
+          height: 200 
+        }
+    });
+
+/*
+we can define a delay in between two animations.
+
+    Example - Delay
+    ---------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, Animated, Button, StyleSheet, Easing } from 'react-native'
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          transformAnimation: new Animated.Value(0),
+          fallAnimation: new Animated.Value(0)
+        }
+      }
+
+      componentDidMount(){
+        this.startAnim();
+      }
+
+      startAnim(){
+        const transformToBall =  Animated.timing(this.state.transformAnimation, {
+          toValue: 250,
+          duration: 1000,
+        });
+
+        const fallToptoBottom =  Animated.timing(this.state.fallAnimation, {
+          toValue: 250,
+          duration: 1000,
+          easing: Easing.bounce
+        });
+
+        Animated.sequence([
+          transformToBall,
+          Animated.delay(1000),
+          fallToptoBottom
+        ]).start();
+      }
+
+      render() {
+        const animationStyles = {
+          borderRadius: this.state.transformAnimation,
+          transform: [
+            { translateY: this.state.fallAnimation },            
+          ],
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]}>
+            </Animated.View>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'red',
+          width: 200,
+          height: 200 
+        }
+    });
+
+
+    
