@@ -1575,7 +1575,7 @@ As it can pick video as well, we will use "react-native-community/react-native-v
     }
 
 /*
-17. PanResponder: PanResponder that is responsible for track user gestures.
+17. PanResponder: PanResponder that is responsible for track user gestures. It provides listeners to handle all types of gestures : single press, long press, pan gestures, force touch (for devices supporting it), multi touches.
 
     Example - Move Object With Touch
     -------------------------------*/
@@ -1590,36 +1590,43 @@ As it can pick video as well, we will use "react-native-community/react-native-v
           previousLeft: 0,
           previousTop: 0,
           pressed: true,
-          panResponder: 0,
           position: new Animated.ValueXY({x: 0, y: 0}),
         }        
         this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
-        // this.handleGrant = this.handleGrant.bind(this);
+        // this.getPanResponder = this.getPanResponder.bind(this);
         // this.handleTerminate = this.handleTerminate.bind(this);
         // this.NativeResponder = this.NativeResponder.bind(this);
       }
 
-      componentDidMount(){
-        const panResponder = PanResponder.create({          
+      getPanResponder(){
+        return PanResponder.create({          
           onStartShouldSetPanResponder: (evt, gestureState) =>  true,
           onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
           onMoveShouldSetPanResponder: (evt, gestureState) => true,
           onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
           onPanResponderTerminationRequest: (evt, gestureState) => true,
-          onPanResponderMove: this.handleMove,
-          onPanResponderRelease: this.handleRelease,
-          // onPanResponderGrant: this.handleGrant,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState);
+          },
           // onPanResponderTerminate: this.handleTerminate,
           // onShouldBlockNativeResponder: this.NativeResponder,
         });
+      }
 
-        this.setState({panResponder: panResponder});
+      handleGrant(evt, gestureState){
+        this.setState({pressed: false})
       }
 
       handleMove(evt, gestureState){
         this.state.position.setValue({ x: this.state.previousLeft+gestureState.dx, y: this.state.previousTop+gestureState.dy });
-        this.setState({pressed: false});
       }
 
       handleRelease(evt, gestureState){
@@ -1628,7 +1635,6 @@ As it can pick video as well, we will use "react-native-community/react-native-v
           previousTop: this.state.previousTop+gestureState.dy,
           pressed: true
         })
-        
       }
 
       render() {
@@ -1639,7 +1645,7 @@ As it can pick video as well, we will use "react-native-community/react-native-v
         };
 
         return (
-          <Animated.View style={[objectStyles.object, animationStyles]} {...this.state.panResponder.panHandlers} >
+          <Animated.View style={[objectStyles.object, animationStyles]} {...this.getPanResponder().panHandlers} >
             <Text>Drag to move</Text>
           </Animated.View>
         );
@@ -1651,7 +1657,8 @@ As it can pick video as well, we will use "react-native-community/react-native-v
         { 
           backgroundColor: 'blue',
           width: 100,
-          height: 100 
+          height: 100,
+          margin: 10 
         }
     });
 
@@ -1669,35 +1676,43 @@ As it can pick video as well, we will use "react-native-community/react-native-v
           previousLeft: 0,
           previousTop: 0,
           pressed: true,
-          panResponder: 0,
           position: new Animated.ValueXY({x: 0, y: 0}),
         }        
         this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
-        // this.handleGrant = this.handleGrant.bind(this);
+        // this.getPanResponder = this.getPanResponder.bind(this);
         // this.handleTerminate = this.handleTerminate.bind(this);
         // this.NativeResponder = this.NativeResponder.bind(this);
       }
 
-      componentDidMount(){
-        const panResponder = PanResponder.create({          
+      getPanResponder(){
+        return PanResponder.create({          
           onStartShouldSetPanResponder: (evt, gestureState) =>  true,
           onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
           onMoveShouldSetPanResponder: (evt, gestureState) => true,
           onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
           onPanResponderTerminationRequest: (evt, gestureState) => true,
-          onPanResponderMove: this.handleMove,
-          onPanResponderRelease: this.handleRelease,
-          // onPanResponderGrant: this.handleGrant,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState);
+          },
           // onPanResponderTerminate: this.handleTerminate,
           // onShouldBlockNativeResponder: this.NativeResponder,
         });
-        this.setState({panResponder: panResponder});
       }
 
       handleMove(evt, gestureState){
-        this.state.position.setValue({ x: this.state.previousLeft+gestureState.dx, y: this.state.previousTop+gestureState.dy });
-        this.setState({pressed: false});
+        this.state.position.setValue({ x: this.state.previousLeft+gestureState.dx, y: this.state.previousTop+gestureState.dy });        
+      }
+
+      handleGrant(evt, gestureState){
+        this.setState({pressed: false})
       }
 
       handleRelease(evt, gestureState){
@@ -1718,7 +1733,7 @@ As it can pick video as well, we will use "react-native-community/react-native-v
         };
 
         return (
-          <Animated.View style={[objectStyles.object, animationStyles]} {...this.state.panResponder.panHandlers} >
+          <Animated.View style={[objectStyles.object, animationStyles]} {...this.getPanResponder().panHandlers} >
             <Text>Drag to move</Text>
           </Animated.View>
         );
@@ -1730,13 +1745,14 @@ As it can pick video as well, we will use "react-native-community/react-native-v
         { 
           backgroundColor: 'blue',
           width: 100,
-          height: 100 
+          height: 100,
+          margin: 10 
         }
     });
 
 /*
-    Example - Move Object with Opacity to zero
-    -----------------------------------------*/
+    Example - Move Object's Opacity to zero
+    --------------------------------------*/
 
     import React, { Component } from 'react'
     import { Text, View, StyleSheet, PanResponder, Animated } from 'react-native'
@@ -1748,36 +1764,46 @@ As it can pick video as well, we will use "react-native-community/react-native-v
           previousLeft: 0,
           previousTop: 0,
           pressed: true,
-          panResponder: 0,
+          dropZoneAreaValue: 0,
           position: new Animated.ValueXY({x: 0, y: 0}),
           fadeValue: new Animated.Value(1),
         }        
         this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
-        // this.handleGrant = this.handleGrant.bind(this);
+        this.setDropZoneValues = this.setDropZoneValues.bind(this);
+        // this.getPanResponder = this.getPanResponder.bind(this);
         // this.handleTerminate = this.handleTerminate.bind(this);
         // this.NativeResponder = this.NativeResponder.bind(this);
       }
 
-      componentDidMount(){
-        const panResponder = PanResponder.create({          
+      getPanResponder(){
+        return PanResponder.create({          
           onStartShouldSetPanResponder: (evt, gestureState) =>  true,
           onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
           onMoveShouldSetPanResponder: (evt, gestureState) => true,
           onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
           onPanResponderTerminationRequest: (evt, gestureState) => true,
-          onPanResponderMove: this.handleMove,
-          onPanResponderRelease: this.handleRelease,
-          // onPanResponderGrant: this.handleGrant,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState);
+          },
           // onPanResponderTerminate: this.handleTerminate,
           // onShouldBlockNativeResponder: this.NativeResponder,
         });
-        this.setState({panResponder: panResponder});
       }
 
       handleMove(evt, gestureState){
         this.state.position.setValue({ x: this.state.previousLeft+gestureState.dx, y: this.state.previousTop+gestureState.dy });
-        this.setState({pressed: false});
+      }
+
+      handleGrant(evt, gestureState){
+        this.setState({pressed: false})
       }
 
       handleRelease(evt, gestureState){
@@ -1796,28 +1822,350 @@ As it can pick video as well, we will use "react-native-community/react-native-v
       }
 
       isDropArea(gestureState) {
-        return gestureState.moveY > 200;
+        var dz = this.state.dropZoneAreaValue;
+        return gestureState.moveY > dz.y && gestureState.moveY < dz.y + dz.height;
+      }
+
+      setDropZoneValues(event){
+        this.setState({dropZoneAreaValue: event.nativeEvent.layout})
       }
 
       render() {
         const dropingAreaStyles = {
-          left: 0, top: 48, borderBottomColor: 'black', borderBottomWidth: 1,
+          height: 150, backgroundColor: 'skyblue'
         };
 
         const animationStyles = {
           left: this.state.position.x,
           top: this.state.position.y,
           backgroundColor: this.state.pressed ? 'blue' : 'green',
-          opacity: this.state.fadeValue
+          opacity: this.state.fadeValue,          
         };
 
         return (
           <View>
-            <Animated.View style={[objectStyles.object, animationStyles]} {...this.state.panResponder.panHandlers} >
+            <View onLayout={this.setDropZoneValues} style={[dropingAreaStyles]}>
+              <Text>Drop Here</Text>
+            </View>
+            <Animated.View style={[objectStyles.object, animationStyles]} {...this.getPanResponder().panHandlers} >
               <Text>Drag to move</Text>
             </Animated.View>
-            <View style={[dropingAreaStyles]}>
-              <Text>Drop After</Text>
+          </View>
+        );
+      }      
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'blue',
+          width: 100,
+          height: 100,
+          margin: 10 
+        }
+    });
+
+/*
+    Example - Move multiple Object With Touch
+    ----------------------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, StyleSheet, PanResponder, Animated } from 'react-native'
+
+    class Square extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          previousLeft: 0,
+          previousTop: 0,
+          pressed: true,
+          position: new Animated.ValueXY({x: 0, y: 0}),
+          fadeValue: new Animated.Value(1),
+        }        
+        this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
+        // this.getPanResponder = this.getPanResponder.bind(this);
+        // this.handleTerminate = this.handleTerminate.bind(this);
+        // this.NativeResponder = this.NativeResponder.bind(this);
+      }
+
+      getPanResponder(){
+        return PanResponder.create({          
+          onStartShouldSetPanResponder: (evt, gestureState) =>  true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onMoveShouldSetPanResponder: (evt, gestureState) => true,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onPanResponderTerminationRequest: (evt, gestureState) => true,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState);
+          },
+          // onPanResponderTerminate: this.handleTerminate,
+          // onShouldBlockNativeResponder: this.NativeResponder,
+        });
+      }
+
+      handleMove(evt, gestureState){
+        this.state.position.setValue({ x: this.state.previousLeft+gestureState.dx, y: this.state.previousTop+gestureState.dy });
+      }
+
+      handleGrant(evt, gestureState){
+        this.setState({pressed: false})
+      }
+
+      handleRelease(evt, gestureState){
+        this.setState({ 
+          previousLeft: this.state.previousLeft+gestureState.dx, 
+          previousTop: this.state.previousTop+gestureState.dy,
+          pressed: true,
+        });
+      }
+
+      render() {
+        const animationStyles = {
+          left: this.state.position.x,
+          top: this.state.position.y,
+          backgroundColor: this.state.pressed ? 'blue' : 'green',
+          opacity: this.state.fadeValue,          
+        };
+
+        return (
+          <View>
+            <Animated.View style={[objectStyles.object, animationStyles]} {...this.getPanResponder().panHandlers} >
+              <Text>Drag to move</Text>
+            </Animated.View>
+          </View>
+        );
+      }      
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'blue',
+          width: 100,
+          height: 100,
+          margin: 10 
+        }
+    });
+
+    export default class App extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+        }        
+      }
+
+      render() {
+        return (
+          <View style={{ flexDirection: "row" }}>
+            <Square/>
+            <Square/>
+            <Square/>
+          </View>
+        );
+      }
+    }
+
+/*
+    Example - Multiple Object On Off
+    --------------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, FlatList, StyleSheet, PanResponder, Animated } from 'react-native'
+
+    const calendarData = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];    
+    const animationStyles = calendarData.map( () => ({backgroundColor: 'steelblue'}) );
+
+    class Square extends Component {
+      constructor(props) {
+        super(props);
+        this.state = { 
+          pressed: true,
+          index: 0,
+        }        
+        this.getPanResponder = this.getPanResponder.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
+        // this.handleGrant = this.handleGrant.bind(this);
+      }
+
+      getPanResponder(backgroundColor,index){
+        return PanResponder.create({          
+          onStartShouldSetPanResponder: (evt, gestureState) =>  true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onMoveShouldSetPanResponder: (evt, gestureState) => true,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onPanResponderTerminationRequest: (evt, gestureState) => true,
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState, backgroundColor, index)
+          },
+        });
+      }
+
+      handleRelease(evt, gestureState, backgroundColor, index){
+        if(backgroundColor == 'steelblue')
+          this.setState({pressed: false,  index: index});
+        else
+          this.setState({pressed: true,  index: index});
+      }
+
+      render() {
+        animationStyles[this.state.index] = {
+          backgroundColor: this.state.pressed ? 'steelblue' : 'skyblue',
+        };
+        
+        return (
+          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap',}}>
+            {calendarData.map((data, index) => (
+              <Animated.View key={index} style={[objectStyles.flatListContainer, animationStyles[index]]} {...this.getPanResponder(animationStyles[index].backgroundColor,index).panHandlers}>
+                <Text>{data}</Text>
+              </Animated.View>
+            ))}
+          </View>
+        );
+      }
+    }
+
+    export default class App extends Component {
+      render() {
+        return (
+          <View>
+            <Square/>
+          </View>
+        );
+      }
+    }
+
+    const objectStyles = StyleSheet.create({
+      flatListContainer: {
+        width: 25,
+        height: 25,
+        borderRadius: 20,
+        margin: 20,
+      },
+    });
+
+/*
+    Example - Multiple Object Move Opacity to Zero
+    --------------------------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, StyleSheet, PanResponder, Animated } from 'react-native'
+    
+    const Data = ['1', '2', '3', ];
+    const animationStyles = Data.map( () => ({backgroundColor: 'blue'}) );
+
+    class Square extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          previousLeft: Data.map( () => 0 ),
+          previousTop: Data.map( () => 0 ),
+          pressed: true,
+          index: 0,
+          dropZoneAreaValue: 0,
+          position: Data.map( () => new Animated.ValueXY({x: 0, y: 0}) ),
+          fadeValue: Data.map( () => new Animated.Value(1)),
+        }        
+        this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
+        this.setDropZoneValues = this.setDropZoneValues.bind(this);
+        this.getPanResponder = this.getPanResponder.bind(this);
+        // this.handleTerminate = this.handleTerminate.bind(this);
+        // this.NativeResponder = this.NativeResponder.bind(this);
+      }
+
+      getPanResponder(index){
+        return PanResponder.create({          
+          onStartShouldSetPanResponder: (evt, gestureState) =>  true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onMoveShouldSetPanResponder: (evt, gestureState) => true,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onPanResponderTerminationRequest: (evt, gestureState) => true,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState, index);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState, index);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState, index);
+          },
+          // onPanResponderTerminate: this.handleTerminate,
+          // onShouldBlockNativeResponder: this.NativeResponder,
+        });
+      }
+
+      handleMove(evt, gestureState, index){
+        this.state.position[index].setValue({ x: this.state.previousLeft[index]+gestureState.dx, y: this.state.previousTop[index]+gestureState.dy });
+      }
+
+      handleGrant(evt, gestureState, index){
+        this.setState({pressed: false, index: index})
+      }
+
+      handleRelease(evt, gestureState, index){
+        const previousLeft = [...this.state.previousLeft];        
+        const previousTop = [...this.state.previousTop];
+        previousLeft[index] = this.state.previousLeft[index]+gestureState.dx;        
+        previousTop[index] = this.state.previousTop[index]+gestureState.dy;
+
+        this.setState({ 
+          previousLeft: previousLeft, 
+          previousTop: previousTop,
+          pressed: true,
+        });
+
+        if (this.isDropArea(gestureState)) {
+          Animated.timing(this.state.fadeValue[index], {           
+            toValue: 0,     
+            duration: 1000    
+            }
+          ).start();
+        }
+
+        this.setState({pressed: true})
+      }
+
+      isDropArea(gestureState) {
+        var dz = this.state.dropZoneAreaValue;
+        return gestureState.moveY > dz.y && gestureState.moveY < dz.y + dz.height;
+      }
+
+      setDropZoneValues(event){
+        this.setState({dropZoneAreaValue: event.nativeEvent.layout})
+      }
+
+      render() {
+        const dropingAreaStyles = {
+          height: 150, backgroundColor: 'skyblue'
+        };
+
+        animationStyles[this.state.index] = {
+          left: this.state.position[this.state.index].x,
+          top: this.state.position[this.state.index].y,
+          backgroundColor: this.state.pressed ? 'blue' : 'green',
+          opacity: this.state.fadeValue[this.state.index],          
+        };
+
+        return (
+          <View>
+            <View onLayout={this.setDropZoneValues} style={[dropingAreaStyles]}>
+              <Text>Drop Here</Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              {Data.map((data, index) => (
+                <Animated.View key={index} style={[objectStyles.object, animationStyles[index]]} {...this.getPanResponder(index).panHandlers} >
+                  <Text style={[objectStyles.textObject]}>{data}</Text>
+                </Animated.View>              
+              ))}
             </View>
           </View>
         );
@@ -1829,6 +2177,154 @@ As it can pick video as well, we will use "react-native-community/react-native-v
         { 
           backgroundColor: 'blue',
           width: 100,
-          height: 100 
-        }
+          height: 100,
+          margin: 10,
+        },
+      textObject: 
+        { color: 'white',
+          fontSize: 40,
+          fontWeight: 'bold',
+          textAlign: 'center',
+        }      
     });
+
+    export default class App extends Component {
+      render() {
+        return (
+          <View>
+            <Square/>
+          </View>
+        );
+      }
+    }
+
+/*
+    Example - Multiple Object Move Stick to region
+    ---------------------------------------------*/
+
+    import React, { Component } from 'react'
+    import { Text, View, StyleSheet, PanResponder, Animated } from 'react-native'
+    
+    const Data = ['1', '2', '3', ];
+    const animationStyles = Data.map( () => ({backgroundColor: 'blue'}) );
+
+    class Square extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          pressed: true,
+          index: 0,
+          dropZoneAreaValue: 0,
+          position: Data.map( () => new Animated.ValueXY({x: 0, y: 0}) ),
+        }        
+        this.handleMove = this.handleMove.bind(this);
+        this.handleGrant = this.handleGrant.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
+        this.setDropZoneValues = this.setDropZoneValues.bind(this);
+        this.getPanResponder = this.getPanResponder.bind(this);
+        // this.handleTerminate = this.handleTerminate.bind(this);
+        // this.NativeResponder = this.NativeResponder.bind(this);
+      }
+
+      getPanResponder(index){
+        return PanResponder.create({          
+          onStartShouldSetPanResponder: (evt, gestureState) =>  true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onMoveShouldSetPanResponder: (evt, gestureState) => true,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+          onPanResponderTerminationRequest: (evt, gestureState) => true,
+          onPanResponderMove: (evt, gestureState) => {
+            this.handleMove(evt, gestureState, index);
+          },
+          onPanResponderGrant: (evt, gestureState) => {
+            this.handleGrant(evt, gestureState, index);
+          },
+          onPanResponderRelease: (evt, gestureState) => {
+            this.handleRelease(evt, gestureState, index);
+          },
+          // onPanResponderTerminate: this.handleTerminate,
+          // onShouldBlockNativeResponder: this.NativeResponder,
+        });
+      }
+
+      handleMove(evt, gestureState, index){
+        this.state.position[index].setValue({ x: gestureState.dx, y: gestureState.dy });
+      }
+
+      handleGrant(evt, gestureState, index){
+        this.setState({pressed: false, index: index})
+      }
+
+      handleRelease(evt, gestureState, index){
+        if (!this.isDropArea(gestureState)) {
+          Animated.spring(this.state.position[index], {           
+            toValue: {x:0,y:0},
+            }
+          ).start();
+        }
+        this.setState({pressed: true})
+      }
+
+      isDropArea(gestureState) {
+        var dz = this.state.dropZoneAreaValue;
+        return gestureState.moveY > dz.y && gestureState.moveY < dz.y + dz.height;
+      }
+
+      setDropZoneValues(event){
+        this.setState({dropZoneAreaValue: event.nativeEvent.layout})
+      }
+
+      render() {
+        const dropingAreaStyles = {
+          height: 150, backgroundColor: 'skyblue'
+        };
+
+        animationStyles[this.state.index] = {
+          left: this.state.position[this.state.index].x,
+          top: this.state.position[this.state.index].y,
+          backgroundColor: this.state.pressed ? 'blue' : 'green',
+        };
+
+        return (
+          <View>
+            <View onLayout={this.setDropZoneValues} style={[dropingAreaStyles]}>
+              <Text>Drop Here</Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              {Data.map((data, index) => (                                  
+                  <Animated.View key={index} style={[objectStyles.object, animationStyles[index]]} {...this.getPanResponder(index).panHandlers} >
+                    <Text style={[objectStyles.textObject]}>{data}</Text>
+                  </Animated.View>
+              ))}
+            </View>
+          </View>
+        );
+      }      
+    }
+
+    const objectStyles = StyleSheet.create({
+      object: 
+        { 
+          backgroundColor: 'blue',
+          width: 100,
+          height: 100,
+          marginTop: 100,
+          marginLeft: 10,
+        },
+      textObject: 
+        { color: 'white',
+          fontSize: 40,
+          fontWeight: 'bold',
+          textAlign: 'center',
+        }      
+    });
+
+    export default class App extends Component {
+      render() {
+        return (
+          <View>
+            <Square/>
+          </View>
+        );
+      }
+    }
